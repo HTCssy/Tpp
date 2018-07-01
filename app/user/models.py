@@ -17,7 +17,7 @@ id, showname, shownameen, director, leadingRole, type, country, language, durati
 
 # 电影
 class Movies(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=False)
     # 电影名
     showname = db.Column(db.String(64), index=True, nullable=False)
     #英文名
@@ -51,7 +51,7 @@ name,city,district,address,phone,score,hallnum,servicecharge,astrict,flag,isdele
 '''
 #电影院
 class Cinemas(db.Model):
-    cid = db.Column(db.Integer, primary_key=True)
+    cid = db.Column(db.Integer, primary_key=True, autoincrement=False)
     #影院名
     name = db.Column(db.String(64), index=True, nullable=False)
     #城市
@@ -71,3 +71,34 @@ class Cinemas(db.Model):
     astrict = db.Column(db.String(256))
     flag = db.Column(db.String(256))
     isdelete = db.Column(db.String(256))
+
+#影厅
+class Hall(db.Model):
+    hid = db.Column(db.Integer, primary_key=True)
+    #影院的外键
+    cid = db.Column(db.Integer, db.ForeignKey('cinemas.cid'))
+    # 厅名
+    name = db.Column(db.String(64), index=True, nullable=False, unique=True)
+    # 座位
+    seats = db.Column(db.String(256), default=0)
+    is_delete = db.Column(db.Boolean, default=False)
+
+#影院排期
+class HallSchedule(db.Model):
+    hsid = db.Column(db.Integer, primary_key=True)
+    #原价
+    or_price = db.Column(db.Numeric(10, 2))
+    #折扣价
+    dis_price = db.Column(db.Numeric(10, 2))
+    # 开始时间
+    start_time = db.Column(db.DateTime)
+    #1未开始  2正在放映
+    status = db.Column(db.Integer, default=False)
+    is_delete = db.Column(db.Boolean, default=False)
+    # 电影的外键
+    mid = db.Column(db.Integer, db.ForeignKey('movies.id'))
+    # 影厅的外键
+    hid = db.Column(db.Integer, db.ForeignKey('hall.hid'))
+    # 影院的外键
+    cid = db.Column(db.Integer, db.ForeignKey('cinemas.cid'))
+

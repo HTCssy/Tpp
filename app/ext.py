@@ -1,5 +1,6 @@
 from flask_caching import Cache
 from flask_mail import Mail
+from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -10,7 +11,10 @@ def init_ext(app):
     init_db(app)
     init_mail(app)
     init_cache(app)
-    init_cors(app)
+    init_mar(app)
+
+
+
 
 #配置数据库迁移
 db = SQLAlchemy()
@@ -48,7 +52,12 @@ def init_cache(app):
                     )
 
 
-#跨域请求问题配置
-cors = CORS()
-def init_cors(app):
-    cors.init_app(app, supports_credentials=True)
+# #跨域请求问题配置
+# cors = CORS()
+# def init_cors(app):
+#     cors.init_app(app, supports_credentials=True)
+
+#对象转json数据
+mar = Marshmallow()
+def init_mar(app):
+    mar.init_app(app)

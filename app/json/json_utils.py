@@ -18,6 +18,9 @@
 #                                 ))
 #             db.session.commit()
 import datetime
+from decimal import Decimal
+
+from app.ext import db
 
 
 def to_dict(object):
@@ -31,6 +34,12 @@ def to_dict(object):
                 obj[key] = getattr(object, key).strftime('%Y-%m-%d %H:%M:%S')
             elif isinstance(getattr(object, key), datetime.date):
                 obj[key] = getattr(object, key).strftime('%Y-%m-%d')
+            elif isinstance(getattr(object, key), Decimal):
+                obj[key] = str(getattr(object, key))
+            elif isinstance(getattr(object, key), db.Model):
+                to_dict(getattr(object, key))
+            elif isinstance(getattr(object, key), list):
+                to_list(getattr(object, key))
             else:
                 obj[key] = getattr(object, key)
     return obj

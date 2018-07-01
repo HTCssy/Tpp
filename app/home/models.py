@@ -13,3 +13,10 @@ class Area(db.Model):
     key = db.Column(db.String(10))
     #热门城市
     is_hot = db.Column(db.Boolean, default=False)
+
+
+class Banner(db.Model):
+    banner_id = db.Column(db.Integer, primary_key=True)
+    #图片地址
+    img_url = db.Column(db.String(10))
+    is_delete = db.Column(db.Boolean, default=False)
